@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication Test</title>
+    <script>
+        function authenticate(event) {
+            event.preventDefault();
+
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            fetch('http://20.40.102.186:3000/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    // Store the token securely
+                    localStorage.setItem('token', data.token);
+                    alert('Authentication successful');
+                } else {
+                    alert('Authentication failed');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Authentication Test</h1>
+    <form onsubmit="authenticate(event)">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
